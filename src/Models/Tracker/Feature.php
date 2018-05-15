@@ -81,4 +81,18 @@ class Feature
     {
         $this->details = $details;
     }
+
+    /**
+     * Converts the feature into an array
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'who' => $this->who,
+            'details' => $this->details,
+            'title' => $this->title
+        ];
+    }
 }

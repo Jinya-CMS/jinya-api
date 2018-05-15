@@ -11,8 +11,19 @@ namespace App\Models\Tracker;
 
 class Submission implements \JsonSerializable
 {
+
+
     /** @var string */
     private $followUpLink;
+
+    /**
+     * Submission constructor.
+     * @param string $followUpLink
+     */
+    public function __construct(string $followUpLink)
+    {
+        $this->followUpLink = $followUpLink;
+    }
 
     /**
      * @return string

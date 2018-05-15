@@ -1,5 +1,6 @@
 twig:
     paths:
       '%kernel.project_dir%/templates/mail': Mail
+      '%kernel.project_dir%/templates/cards': Cards
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'

@@ -23,6 +23,42 @@ class Bug
     private $reproduce;
     /** @var int */
     private $severity;
+    /** @var string */
+    private $jinyaVersion;
+    /** @var string */
+    private $phpInfo;
+
+    /**
+     * @return string
+     */
+    public function getJinyaVersion(): string
+    {
+        return $this->jinyaVersion;
+    }
+
+    /**
+     * @param string $jinyaVersion
+     */
+    public function setJinyaVersion(string $jinyaVersion): void
+    {
+        $this->jinyaVersion = $jinyaVersion;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhpInfo(): string
+    {
+        return $this->phpInfo;
+    }
+
+    /**
+     * @param string $phpInfo
+     */
+    public function setPhpInfo(string $phpInfo): void
+    {
+        $this->phpInfo = $phpInfo;
+    }
 
     /**
      * Creates a bug from the given array
@@ -33,12 +69,18 @@ class Bug
     public static function fromArray(array $array): Bug
     {
         $bug = new Bug();
-        $bug->url = $array['url'];
+        $url = parse_url($array['url']);
+        $bug->url = $url['path'];
+        if (array_key_exists('query', $url)) {
+            $bug->url .= '?' . $url['query'];
+        }
         $bug->who = $array['who'];
         $bug->title = $array['title'];
         $bug->details = $array['details'];
         $bug->reproduce = $array['reproduce'];
         $bug->severity = (int)$array['severity'];
+        $bug->jinyaVersion = $array['jinyaVersion'];
+        $bug->phpInfo = $array['phpInfo'];
 
         return $bug;
     }
@@ -137,5 +179,24 @@ class Bug
     public function setSeverity(int $severity): void
     {
         $this->severity = $severity;
+    }
+
+    /**
+     * Converts the bug into an array
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'who' => $this->who,
+            'url' => $this->url,
+            'phpInfo' => $this->phpInfo,
+            'details' => $this->details,
+            'title' => $this->title,
+            'reproduce' => $this->reproduce,
+            'jinyaVersion' => $this->jinyaVersion,
+            'severity' => $this->severity
+        ];
     }
 }
