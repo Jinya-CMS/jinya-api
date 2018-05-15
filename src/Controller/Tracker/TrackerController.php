@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class TrackerController extends BaseApiController
 {
     /**
-     * @Route("/api/tracker/bug", name="api_tracker_bug", methods={"POST"})
+     * @Route("/tracker/bug", name="api_tracker_bug", methods={"POST"})
      *
      * @param Request $request
      * @param TrackerServiceInterface $trackerService
@@ -37,7 +37,7 @@ class TrackerController extends BaseApiController
     }
 
     /**
-     * @Route("/api/tracker/feature", name="api_tracker_feature", methods={"POST"})
+     * @Route("/tracker/feature", name="api_tracker_feature", methods={"POST"})
      *
      * @param Request $request
      * @param TrackerServiceInterface $trackerService
@@ -53,7 +53,7 @@ class TrackerController extends BaseApiController
     }
 
     /**
-     * @Route("/api/tracker/like", name="api_tracker_like", methods={"POST"})
+     * @Route("/tracker/like", name="api_tracker_like", methods={"POST"})
      *
      * @param Request $request
      * @param TrackerServiceInterface $trackerService

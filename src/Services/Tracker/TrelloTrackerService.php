@@ -72,16 +72,20 @@ class TrelloTrackerService implements TrackerServiceInterface
     private function sendInformationToDevelopers($data, string $type, string $link = ''): void
     {
         try {
-            $template = $this->twigEnv->load(__DIR__ . "/Templates/${type}Template.twig");
+            $typeToLower = strtolower($type);
+            $template = $this->twigEnv->load("@Mail/$typeToLower.twig");
+            $BOT_NAME = $_SERVER['BOT_NAME'];
+
             /** @var \Swift_Message $message */
             $message = $this->mailer->createMessage();
-            $message
-                ->addTo('developers@jinya.de')
-                ->addFrom('trello@jinya.de', 'Jinya Trello Bot')
+            $message->addTo($_SERVER['DEVELOPERS_MAIL'])
+                ->addFrom($_SERVER['BOT_MAIL'], $BOT_NAME)
                 ->setBody($template->render([
                     'who' => $data->getWho(),
                     'link' => $link,
-                    'message' => $data instanceof Like ? $data->getMessage() : ''
+                    'message' => $data instanceof Like ? $data->getMessage() : '',
+                    'botName' => $BOT_NAME,
+                    'developersName' => $_SERVER['DEVELOPERS_NAME']
                 ]), 'text/html', 'UTF-8')
                 ->setSubject('Someone likes Jinya');
 
