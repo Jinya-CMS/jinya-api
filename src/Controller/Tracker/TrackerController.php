@@ -8,7 +8,6 @@
 
 namespace App\Controller\Tracker;
 
-
 use App\Framework\BaseApiController;
 use App\Models\Tracker\Bug;
 use App\Models\Tracker\Feature;
@@ -67,5 +66,4 @@ class TrackerController extends BaseApiController
 
         return $this->json($data, $status);
     }
-
 }

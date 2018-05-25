@@ -8,7 +8,6 @@
 
 namespace App\Services\Trello;
 
-
 use App\Models\Trello\Card;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
@@ -16,7 +15,6 @@ use Underscore\Types\Arrays;
 
 class TrelloClient implements TrelloClientInterface
 {
-
     /** @var Client */
     private $client;
 
@@ -45,7 +43,7 @@ class TrelloClient implements TrelloClientInterface
         $uri = 'https://api.trello.com/1/cards';
         $response = $this->client->request('POST', $uri, [
             RequestOptions::HEADERS => ['Content-Type' => 'application/json'],
-            RequestOptions::JSON => $queryParameters
+            RequestOptions::JSON => $queryParameters,
         ]);
         $newCard = json_decode($response->getBody()->getContents(), true);
 
@@ -106,26 +104,26 @@ class TrelloClient implements TrelloClientInterface
             'multipart' => [
                 [
                     'name' => 'key',
-                    'contents' => $this->apiKey()
+                    'contents' => $this->apiKey(),
                 ],
                 [
                     'name' => 'token',
-                    'contents' => $this->oauthToken()
+                    'contents' => $this->oauthToken(),
                 ],
                 [
                     'name' => 'mimeType',
-                    'contents' => $mimeType
+                    'contents' => $mimeType,
                 ],
                 [
                     'name' => 'name',
-                    'contents' => $name
+                    'contents' => $name,
                 ],
                 [
                     'name' => 'file',
                     'contents' => $data,
-                    'filename' => $name
-                ]
-            ]
+                    'filename' => $name,
+                ],
+            ],
         ]);
     }
 }

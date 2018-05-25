@@ -8,13 +8,14 @@
 
 namespace App\Models\Tracker;
 
-
 class Feature
 {
     /** @var string */
     private $who;
+
     /** @var string */
     private $title;
+
     /** @var string */
     private $details;
 
@@ -24,9 +25,9 @@ class Feature
      * @param array $array
      * @return Feature
      */
-    public static function fromArray(array $array): Feature
+    public static function fromArray(array $array): self
     {
-        $bug = new Feature();
+        $bug = new self();
         $bug->who = $array['who'];
         $bug->title = $array['title'];
         $bug->details = $array['details'];
@@ -92,7 +93,7 @@ class Feature
         return [
             'who' => $this->who,
             'details' => $this->details,
-            'title' => $this->title
+            'title' => $this->title,
         ];
     }
 }
