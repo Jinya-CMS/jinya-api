@@ -8,23 +8,29 @@
 
 namespace App\Models\Tracker;
 
-
 class Bug
 {
     /** @var string */
     private $url;
+
     /** @var string */
     private $who;
+
     /** @var string */
     private $title;
+
     /** @var string */
     private $details;
+
     /** @var string */
     private $reproduce;
+
     /** @var int */
     private $severity;
+
     /** @var string */
     private $jinyaVersion;
+
     /** @var string */
     private $phpInfo;
 
@@ -66,9 +72,9 @@ class Bug
      * @param array $array
      * @return Bug
      */
-    public static function fromArray(array $array): Bug
+    public static function fromArray(array $array): self
     {
-        $bug = new Bug();
+        $bug = new self();
         $url = parse_url($array['url']);
         $bug->url = $url['path'];
         if (array_key_exists('query', $url)) {
@@ -78,7 +84,7 @@ class Bug
         $bug->title = $array['title'];
         $bug->details = $array['details'];
         $bug->reproduce = $array['reproduce'];
-        $bug->severity = (int)$array['severity'];
+        $bug->severity = (int) $array['severity'];
         $bug->jinyaVersion = $array['jinyaVersion'];
         $bug->phpInfo = $array['phpInfo'];
 
@@ -196,7 +202,7 @@ class Bug
             'title' => $this->title,
             'reproduce' => $this->reproduce,
             'jinyaVersion' => $this->jinyaVersion,
-            'severity' => $this->severity
+            'severity' => $this->severity,
         ];
     }
 }
