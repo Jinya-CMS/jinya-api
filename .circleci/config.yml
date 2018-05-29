@@ -4,6 +4,7 @@ jobs:
     docker:
       -
         image: circleci/php
+    working_directory: ~/jinya
     steps:
       - checkout
       -
