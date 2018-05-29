@@ -23,7 +23,7 @@ jobs:
         run:
           command: |
             mkdir -p ~/dist
-            cd ~/jinya/jinya-api/
+            cd ~/jinya/
             tar -zcf ~/dist/jinya-api.tar.gz *
       -
         persist_to_workspace:
