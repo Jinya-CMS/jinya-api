@@ -41,7 +41,7 @@ jobs:
       -
         run:
           command: |
-            scp -oStrictHostKeyChecking=no -r ~/dist/jinya-api.tar.gz $DEPLOY_LOGIN@$DEPLOY_SERVER:$DEPLOY_TARGET/jinya-api.tar.gz
+            scp -oStrictHostKeyChecking=no -r ~/jinya/jinya-api.tar.gz $DEPLOY_LOGIN@$DEPLOY_SERVER:$DEPLOY_TARGET/jinya-api.tar.gz
             ssh -oStrictHostKeyChecking=no "tar -zxf $DEPLOY_TARGET/jinya-api.tar.gz -C $DEPLOY_TARGET/"
           name: "Deploy via SCP"
     working_directory: ~/jinya
