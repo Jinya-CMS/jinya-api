@@ -19,11 +19,17 @@ jobs:
           paths:
             - ./vendor
       -
+        run:
+          command: |
+            mkdir -p ~/dist
+            cd ~/jinya/jinya-api/
+            tar -zcf ~/dist/jinya-api.tar.gz *
+      -
         persist_to_workspace:
           paths:
-            - jinya
+            - jinya-api.tar.gz
           root: ~/
-    working_directory: ~/jinya
+    working_directory: ~/dist
   deploy:
     docker:
       -
@@ -35,7 +41,8 @@ jobs:
       -
         run:
           command: |
-            scp -oStrictHostKeyChecking=no -r ~/jinya/* $DEPLOY_LOGIN@$DEPLOY_SERVER:$DEPLOY_TARGET/
+            scp -oStrictHostKeyChecking=no -r ~/dist/jinya-api.tar.gz $DEPLOY_LOGIN@$DEPLOY_SERVER:$DEPLOY_TARGET/jinya-api.tar.gz
+            ssh -oStrictHostKeyChecking=no "tar -zxf $DEPLOY_TARGET/jinya-api.tar.gz -C $DEPLOY_TARGET/"
           name: "Deploy via SCP"
     working_directory: ~/jinya
 version: 2
