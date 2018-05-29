@@ -29,8 +29,7 @@ jobs:
         persist_to_workspace:
           paths:
             - jinya-api.tar.gz
-          root: ~/
-    working_directory: ~/dist
+          root: ~/dist
   deploy:
     docker:
       -
