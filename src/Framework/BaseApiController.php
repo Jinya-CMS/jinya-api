@@ -39,11 +39,12 @@ abstract class BaseApiController extends AbstractController
     {
         try {
             return [$function(), $successStatusCode];
-        } /** @noinspection PhpRedundantCatchClauseInspection */ catch (FileNotFoundException $exception) {
+        } /* @noinspection PhpRedundantCatchClauseInspection */ catch (FileNotFoundException $exception) {
             return [$this->jsonFormatException('The requested url is not available', $exception), Response::HTTP_NOT_FOUND];
         } catch (Throwable $throwable) {
             $this->logger->error($throwable->getMessage());
             $this->logger->error($throwable->getTraceAsString());
+
             return [$this->jsonFormatException('Internal server error', $throwable), Response::HTTP_INTERNAL_SERVER_ERROR];
         }
     }
@@ -60,8 +61,8 @@ abstract class BaseApiController extends AbstractController
         $data = [
             'success' => false,
             'error' => [
-                'message' => $message
-            ]
+                'message' => $message,
+            ],
         ];
         if ($this->isDebug()) {
             $data['error']['exception'] = $throwable->getMessage();
@@ -69,6 +70,7 @@ abstract class BaseApiController extends AbstractController
             $data['error']['stack'] = $throwable->getTraceAsString();
             $data['error']['line'] = $throwable->getLine();
         }
+
         return $data;
     }
 
@@ -80,6 +82,7 @@ abstract class BaseApiController extends AbstractController
     private function isDebug(): bool
     {
         $env = $_SERVER['APP_ENV'] ?? 'dev';
+
         return $_SERVER['APP_DEBUG'] ?? ('prod' !== $env);
     }
 }

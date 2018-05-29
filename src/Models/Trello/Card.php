@@ -8,15 +8,17 @@
 
 namespace App\Models\Trello;
 
-
 class Card implements \JsonSerializable
 {
     /** @var string */
     private $name;
+
     /** @var string */
     private $desc;
+
     /** @var string */
     private $idList;
+
     /** @var string[] */
     private $idLabels;
 
@@ -24,9 +26,9 @@ class Card implements \JsonSerializable
     {
     }
 
-    public static function fromArray(array $data): Card
+    public static function fromArray(array $data): self
     {
-        $card = new Card();
+        $card = new self();
         $card->desc = array_key_exists('desc', $data) ? $data['desc'] : '';
         $card->name = array_key_exists('name', $data) ? $data['name'] : '';
         $card->idLabels = $data['labels'];
@@ -101,9 +103,9 @@ class Card implements \JsonSerializable
 
     /**
      * Specify data which should be serialized to JSON
-     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @see http://php.net/manual/en/jsonserializable.jsonserialize.php
      * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
+     * which is a value of any type other than a resource
      * @since 5.4.0
      */
     public function jsonSerialize()
@@ -112,7 +114,7 @@ class Card implements \JsonSerializable
             'idLabels' => implode(',', $this->idLabels),
             'name' => $this->name,
             'desc' => $this->desc,
-            'idList' => $this->idList
+            'idList' => $this->idList,
         ];
     }
 }

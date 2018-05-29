@@ -8,7 +8,6 @@
 
 namespace App\Services\Tracker;
 
-
 use App\Models\Tracker\Bug;
 use App\Models\Tracker\Feature;
 use App\Models\Tracker\Like;
