@@ -8,7 +8,6 @@
 
 namespace App\Services\Trello;
 
-
 use App\Models\Trello\Card;
 
 interface TrelloClientInterface

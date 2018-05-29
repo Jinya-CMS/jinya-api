@@ -8,11 +8,11 @@
 
 namespace App\Models\Tracker;
 
-
 class Like
 {
     /** @var string */
     private $who;
+
     /** @var string */
     private $message;
 
@@ -22,9 +22,9 @@ class Like
      * @param array $array
      * @return Like
      */
-    public static function fromArray(array $array): Like
+    public static function fromArray(array $array): self
     {
-        $like = new Like();
+        $like = new self();
         $like->message = array_key_exists('message', $array) ? $array['message'] : null;
         $like->who = $array['who'];
 

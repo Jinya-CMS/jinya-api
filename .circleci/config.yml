@@ -1,0 +1,54 @@
+---
+jobs:
+  build:
+    docker:
+      -
+        image: circleci/php
+    steps:
+      - checkout
+      -
+        restore_cache:
+          keys:
+            - "v1-dependencies-{{ checksum \"composer.json\" }}"
+            - v1-dependencies-
+      -
+        run: "composer install -n --prefer-dist --no-scripts --no-dev"
+      -
+        save_cache:
+          key: "v1-dependencies-{{ checksum \"composer.json\" }}"
+          paths:
+            - ./vendor
+      -
+        persist_to_workspace:
+          paths:
+            - jinya
+          root: ~/
+    working_directory: ~/jinya
+  deploy:
+    docker:
+      -
+        image: circleci/php
+    steps:
+      -
+        attach_workspace:
+          at: ~/jinya/
+      -
+        run:
+          command: |
+            scp -oStrictHostKeyChecking=no -r ~/jinya/* $DEPLOY_LOGIN@$DEPLOY_SERVER:$DEPLOY_TARGET/
+          name: "Deploy via SCP"
+    working_directory: ~/jinya
+version: 2
+workflows:
+  stable:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - master
+      -
+        deploy:
+          requires:
+            - build
+  version: 2

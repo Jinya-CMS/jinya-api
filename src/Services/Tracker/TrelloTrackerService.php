@@ -8,7 +8,6 @@
 
 namespace App\Services\Tracker;
 
-
 use App\Models\Tracker\Bug;
 use App\Models\Tracker\Feature;
 use App\Models\Tracker\Like;
@@ -20,9 +19,10 @@ use Underscore\Types\Strings;
 
 class TrelloTrackerService implements TrackerServiceInterface
 {
-
     private const BUG = 'Bug';
+
     private const FEATURE = 'Feature';
+
     private const LIKE = 'Like';
 
     /** @var \Twig_Environment */
@@ -64,7 +64,7 @@ class TrelloTrackerService implements TrackerServiceInterface
     public function submitBug(Bug $bug): Submission
     {
         $desc = $this->twigEnv->load('@Cards\bug.twig')->render([
-            'bug' => $bug->toArray()
+            'bug' => $bug->toArray(),
         ]);
         $guessedLabels = $this->guessLabels($bug->getTitle(), $bug->getDetails(), $bug->getUrl());
         $guessedLabels[] = $this->trelloClient->getLabelId('Bug');
@@ -72,7 +72,7 @@ class TrelloTrackerService implements TrackerServiceInterface
         $card = $this->trelloClient->submitCard(Card::fromArray([
             'name' => $bug->getTitle(),
             'desc' => $desc,
-            'labels' => $guessedLabels
+            'labels' => $guessedLabels,
         ]));
 
         $this->trelloClient->attachFile($card['id'], 'phpinfo.html', $bug->getPhpInfo());
@@ -94,7 +94,7 @@ class TrelloTrackerService implements TrackerServiceInterface
     public function submitFeature(Feature $featureRequest): Submission
     {
         $desc = $this->twigEnv->load('@Cards\feature.twig')->render([
-            'feature' => $featureRequest->toArray()
+            'feature' => $featureRequest->toArray(),
         ]);
 
         $guessedLabels = $this->guessLabels($featureRequest->getTitle(), $featureRequest->getDetails());
@@ -103,7 +103,7 @@ class TrelloTrackerService implements TrackerServiceInterface
         $card = $this->trelloClient->submitCard(Card::fromArray([
             'name' => $featureRequest->getTitle(),
             'desc' => $desc,
-            'labels' => $guessedLabels
+            'labels' => $guessedLabels,
         ]));
         $link = $card['shortUrl'];
 
@@ -150,7 +150,7 @@ class TrelloTrackerService implements TrackerServiceInterface
                     'link' => $link,
                     'message' => $data instanceof Like ? $data->getMessage() : '',
                     'botName' => $botName,
-                    'developersName' => $developersName
+                    'developersName' => $developersName,
                 ]), 'text/html', 'UTF-8')
                 ->setSubject($subject);
 
@@ -176,7 +176,7 @@ class TrelloTrackerService implements TrackerServiceInterface
         $data = $title . "\n" . $details . "\n" . $url;
         if (!empty($url) && Strings::find(Strings::lower($url), 'designer')) {
             $labels[] = 'Designer';
-        } else if (!empty($url)) {
+        } elseif (!empty($url)) {
             $labels[] = 'Frontend';
         }
 
