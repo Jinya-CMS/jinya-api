@@ -60,12 +60,11 @@ class EmailTrackerService implements TrackerServiceInterface
     }
 
     /**
-     * @param Bug|Feature|Like $data
+     * @param Bug|Feature $data
      * @param string $type
      * @param string $subject
-     * @param string $link
      */
-    private function sendTicketMail($data, string $type, string $subject, string $link = ''): void
+    private function sendTicketMail($data, string $type, string $subject): void
     {
         try {
             $typeToLower = strtolower($type);
@@ -74,17 +73,20 @@ class EmailTrackerService implements TrackerServiceInterface
             $botName = getenv('BOT_NAME');
             $botMail = getenv('BOT_MAIL');
 
+            $templateData = $data->toArray();
+            $templateData['botName'] = $botName;
+
             /** @var \Swift_Message $message */
             $message = $this->mailer->createMessage();
             $message->addTo($supportMail)
                 ->addFrom($botMail, $botName)
-                ->setBody($template->render([
-                    'who' => $data->getWho(),
-                    'link' => $link,
-                    'message' => $data instanceof Like ? $data->getMessage() : '',
-                    'botName' => $botName,
-                ]), 'text/plain', 'UTF-8')
+                ->setBody($template->render($templateData), 'text/html', 'UTF-8')
                 ->setSubject($subject);
+
+            if ($data instanceof Bug) {
+                $phpInfo = new \Swift_Attachment($data->getPhpInfo(), 'phpinfo.html', 'text/html');
+                $message->attach($phpInfo);
+            }
 
             $this->mailer->send($message);
         } catch (\Throwable $e) {

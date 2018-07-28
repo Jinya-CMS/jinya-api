@@ -1,15 +1,21 @@
-{{ bug.who }} found a bug in Jinya {{ bug.jinyaVersion }}.
-===================================
-They say its severity is **{{ bug.severity }}**.
-The bug is available under this url {{ bug.url }}
-
-The details
---------------------
-{{ bug.details }}
-
-Reproduce it
---------------------
-{{ bug.reproduce }}
-
-Grettings,
-The friendly Jinya Support Bot
+<html>
+<body>
+<h1>{{ who }} found a bug in Jinya {{ jinyaVersion }}.</h1>
+<p>
+    They say its severity is <i>{{ severity }}</i>.<br/>
+    The bug is available under this url {{ url }}
+</p>
+<h2>The details</h2>
+<p>
+    {{ details }}
+</p>
+<h2>Reproduce it</h2>
+<p>
+    {{ reproduce }}
+</p>
+<p>
+    Greetings,<br/>
+    {{ botName }}
+</p>
+</body>
+</html>
