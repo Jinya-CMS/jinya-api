@@ -33,7 +33,11 @@ func SendMail(subject string, body string, attachments ...Attachment) error {
 
 	message.BodyContentType = "text/html"
 
-	auth := smtp.PlainAuth("", username, password, host)
+	var auth smtp.Auth
+	if username != "" && password != "" {
+		auth = smtp.PlainAuth("", username, password, host)
+	}
+
 	err := email.Send(host+":"+port, auth, message)
 	if err != nil {
 		return err

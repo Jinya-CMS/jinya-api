@@ -5,7 +5,8 @@ import (
 	"net/http/cgi"
 	"os"
 
-	"./routes"
+	"./bug"
+	"./feature"
 
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/julienschmidt/httprouter"
@@ -13,8 +14,8 @@ import (
 
 func main() {
 	router := httprouter.New()
-	router.POST("/tracker/bug", routes.Bug)
-	router.POST("/tracker/feature", routes.Feature)
+	router.POST("/tracker/bug", bug.Route)
+	router.POST("/tracker/feature", feature.Route)
 
 	if len(os.Args) > 1 && os.Args[1] == "self-hosted" {
 		err := http.ListenAndServe(":8090", router)

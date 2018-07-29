@@ -1,12 +1,9 @@
-package types
+package feature
 
-type Bug struct {
+type Feature struct {
 	Who          string `json:"who"`
 	Url          string `json:"url"`
 	Title        string `json:"title"`
 	Details      string `json:"details"`
-	Reproduce    string `json:"reproduce"`
-	Severity     string `json:"severity"`
 	JinyaVersion string `json:"jinyaVersion"`
-	PhpInfo      string `json:"phpInfo"`
 }

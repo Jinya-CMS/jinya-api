@@ -1,14 +1,15 @@
-package mail
+package bug
 
 import (
 	"bytes"
 	"html/template"
 
+	"../mail"
 	"../types"
 )
 
-func formatBug(bug types.Bug) (string, error) {
-	mail, err := template.New("bugTicketMail").Parse(`<html>
+func formatMail(bug Bug) (string, error) {
+	mailTpl, err := template.New("bugTicketMail").Parse(`<html>
 <body>
 <h1>{{ .Who }} found a bug in Jinya {{ .JinyaVersion }}.</h1>
 <p>
@@ -35,7 +36,7 @@ func formatBug(bug types.Bug) (string, error) {
 	}
 
 	var tpl bytes.Buffer
-	err = mail.Execute(&tpl, bug)
+	err = mailTpl.Execute(&tpl, bug)
 
 	if err != nil {
 		return "", err
@@ -44,23 +45,23 @@ func formatBug(bug types.Bug) (string, error) {
 	return tpl.String(), nil
 }
 
-func SendBug(bug types.Bug) (*types.Submission, error) {
+func SendMail(bug Bug) (*types.Submission, error) {
 	submission := types.Submission{
 		FollowUpLink: "",
 	}
 
-	ticketTpl, err := formatBug(bug)
+	ticketTpl, err := formatMail(bug)
 
 	if err != nil {
 		return nil, err
 	}
 
-	phpInfo := Attachment{
+	phpInfo := mail.Attachment{
 		Content:  bug.PhpInfo,
 		Filename: "phpinfo.html",
 	}
 
-	err = SendMail(bug.Title, ticketTpl, phpInfo)
+	err = mail.SendMail(bug.Title, ticketTpl, phpInfo)
 
 	return &submission, err
 }
