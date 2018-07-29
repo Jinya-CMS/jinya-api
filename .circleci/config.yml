@@ -2,38 +2,26 @@
 jobs:
   build:
     docker:
-      -
-        image: circleci/php
+      - image: circleci/golang
     working_directory: ~/jinya
     steps:
       - checkout
       -
-        restore_cache:
-          keys:
-            - "v1-dependencies-{{ checksum \"composer.json\" }}"
-            - v1-dependencies-
-      -
-        run: "composer install -n --prefer-dist --no-scripts --no-dev"
-      -
-        save_cache:
-          key: "v1-dependencies-{{ checksum \"composer.json\" }}"
-          paths:
-            - ./vendor
-      -
         run:
           command: |
-            mkdir -p ~/dist
-            cd ~/jinya/
-            tar -zcf ~/dist/jinya-api.tar.gz *
+            sudo chmod -R 777 /usr/
+            export GOARCH=386
+            export GOOS=linux
+            go get github.com/scorredoira/email
+            go build -i -o /home/circleci/jinya-api .
       -
         persist_to_workspace:
           paths:
-            - jinya-api.tar.gz
-          root: ~/dist
+          - jinya-api
+          root: ~/
   deploy:
     docker:
-      -
-        image: circleci/php
+      - image: circleci/golang
     steps:
       -
         attach_workspace:
@@ -41,8 +29,7 @@ jobs:
       -
         run:
           command: |
-            scp -oStrictHostKeyChecking=no -r ~/jinya/jinya-api.tar.gz $DEPLOY_LOGIN@$DEPLOY_SERVER:$DEPLOY_TARGET/jinya-api.tar.gz
-            ssh -oStrictHostKeyChecking=no $DEPLOY_LOGIN@$DEPLOY_SERVER "tar -zxf $DEPLOY_TARGET/jinya-api.tar.gz -C $DEPLOY_TARGET/"
+            scp -oStrictHostKeyChecking=no -r ~/jinya/jinya-api.tar.gz $DEPLOY_LOGIN@$DEPLOY_SERVER:$DEPLOY_TARGET/jinya-api
           name: "Deploy via SCP"
     working_directory: ~/jinya
 version: 2
