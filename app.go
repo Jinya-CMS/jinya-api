@@ -14,6 +14,7 @@ import (
 func main() {
 	router := httprouter.New()
 	router.POST("/tracker/bug", routes.Bug)
+	router.POST("/tracker/feature", routes.Feature)
 
 	if len(os.Args) > 1 && os.Args[1] == "self-hosted" {
 		err := http.ListenAndServe(":8090", router)

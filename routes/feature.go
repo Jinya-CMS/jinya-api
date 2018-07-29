@@ -1,31 +1,29 @@
 package routes
 
 import (
+	"../mail"
+	"../types"
 	"encoding/json"
+	"github.com/julienschmidt/httprouter"
 	"io/ioutil"
 	"log"
 	"net/http"
-
-	"../mail"
-	"../types"
-
-	"github.com/julienschmidt/httprouter"
 )
 
-func Bug(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	bug := types.Bug{}
+func Feature(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	feature := types.Feature{}
 	jsn, err := ioutil.ReadAll(r.Body)
 
 	if err != nil {
 		log.Fatal("Error reading the body", err)
 	}
 
-	err = json.Unmarshal(jsn, &bug)
+	err = json.Unmarshal(jsn, &feature)
 	if err != nil {
 		log.Fatal("Decoding error: ", err)
 	}
 
-	submission, err := mail.SendBug(bug)
+	submission, err := mail.SendFeature(feature)
 
 	w.Header().Set("Content-MimeType", "application/json")
 	if err != nil {

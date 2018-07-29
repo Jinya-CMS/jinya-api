@@ -7,7 +7,7 @@ import (
 	"../types"
 )
 
-func format(bug types.Bug) (string, error) {
+func formatBug(bug types.Bug) (string, error) {
 	mail, err := template.New("bugTicketMail").Parse(`<html>
 <body>
 <h1>{{ .Who }} found a bug in Jinya {{ .JinyaVersion }}.</h1>
@@ -44,12 +44,12 @@ func format(bug types.Bug) (string, error) {
 	return tpl.String(), nil
 }
 
-func Send(bug types.Bug) (*types.Submission, error) {
+func SendBug(bug types.Bug) (*types.Submission, error) {
 	submission := types.Submission{
 		FollowUpLink: "",
 	}
 
-	ticketTpl, err := format(bug)
+	ticketTpl, err := formatBug(bug)
 
 	if err != nil {
 		return nil, err
