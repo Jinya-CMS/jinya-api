@@ -47,7 +47,7 @@ func SendMail(feature Feature) (*types.Submission, error) {
 		return nil, err
 	}
 
-	err = mail.SendMail(feature.Title, ticketTpl)
+	err = mail.SendMailTicket(feature.Title, ticketTpl)
 
 	return &submission, err
 }
