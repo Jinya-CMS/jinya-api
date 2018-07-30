@@ -12,7 +12,7 @@ jobs:
             sudo chmod -R 777 /usr/
             export GOARCH=386
             export GOOS=linux
-            go get github.com/scorredoira/email
+            go get github.com/scorredoira/email github.com/joho/godotenv github.com/julienschmidt/httprouter
             go build -i -o /home/circleci/jinya-api .
       -
         persist_to_workspace:
@@ -29,7 +29,7 @@ jobs:
       -
         run:
           command: |
-            scp -oStrictHostKeyChecking=no -r ~/jinya/jinya-api.tar.gz $DEPLOY_LOGIN@$DEPLOY_SERVER:$DEPLOY_TARGET/jinya-api
+            scp -oStrictHostKeyChecking=no -r ~/jinya/jinya-api $DEPLOY_LOGIN@$DEPLOY_SERVER:$DEPLOY_TARGET/jinya-api
           name: "Deploy via SCP"
     working_directory: ~/jinya
 version: 2
