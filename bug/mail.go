@@ -61,7 +61,7 @@ func SendMail(bug Bug) (*types.Submission, error) {
 		Filename: "phpinfo.html",
 	}
 
-	err = mail.SendMail(bug.Title, ticketTpl, phpInfo)
+	err = mail.SendMailTicket(bug.Title, ticketTpl, phpInfo)
 
 	return &submission, err
 }
